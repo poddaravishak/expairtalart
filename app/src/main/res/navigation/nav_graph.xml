@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragment_notification">
+
+    <!-- Fragment destinations -->
+    <fragment
+        android:id="@+id/fragment_notification"
+        android:name="com.eterces.expiryalert.Fragment_Notification"
+        android:label="NotificationFragment">
+        <!-- Define any fragment-specific configurations here -->
+    </fragment>
+
+    <!-- Activity destinations -->
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.eterces.expiryalert.MainActivity">
+        <!-- Define any activity-specific configurations here -->
+    </activity>
+
+    <activity
+        android:id="@+id/mainActivity2"
+        android:name="com.eterces.expiryalert.MainActivity2">
+        <!-- Define any activity-specific configurations here -->
+    </activity>
+
+    <!-- Navigation actions -->
+    <action
+        android:id="@+id/action_notificationFragment_to_mainActivity"
+        app:destination="@id/mainActivity" />
+
+    <action
+        android:id="@+id/action_notificationFragment_to_mainActivity2"
+        app:destination="@id/mainActivity2" />
+
+</navigation>
