@@ -1,33 +1,56 @@
 <!-- dialog_input.xml -->
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginBottom="20dp"
+    app:cardCornerRadius="25dp"
+    >
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    >
+
 
     <Spinner
         android:id="@+id/spinnerCategory"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/edit_text"
+        android:hint="Enter Product name "
+        android:layout_margin="15dp"
+        android:paddingLeft="10dp"
+
         android:layout_marginBottom="8dp"/>
 
     <Button
         android:id="@+id/buttonPickDate"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/button_bg"
+        android:drawableRight="@drawable/calendar"
+        android:paddingRight="10dp"
         android:text="Select a Date"/>
 
     <Button
         android:id="@+id/buttonPickImage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/button_bg"
+        android:drawableRight="@drawable/image"
+        android:paddingRight="10dp"
         android:text="Pick Image"/>
     <ImageView
         android:id="@+id/imageViewSelectedImage"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
@@ -37,12 +60,27 @@
     <EditText
         android:id="@+id/editTextInput"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter something"/>
+        android:layout_height="50dp"
+        android:background="@drawable/edit_text"
+        android:hint="Enter Product name "
+        android:layout_margin="15dp"
+        android:paddingLeft="10dp"
+        android:drawableLeft="@drawable/itemlogo"
+        android:drawablePadding="10sp"/>
+
+
+
+
 
     <Button
         android:id="@+id/buttonSubmit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/button_bg"
+        android:drawableRight="@drawable/add"
+        android:paddingRight="10dp"
+        android:layout_margin="15dp"
         android:text="Submit"/>
 </LinearLayout>
+
+</androidx.cardview.widget.CardView>

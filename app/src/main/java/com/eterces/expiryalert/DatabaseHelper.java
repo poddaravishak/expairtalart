@@ -16,7 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_DATE = "expiration_date";
     public static final String COLUMN_IMAGE_URI = "image_uri";
-    public static final String COLUMN_CATEGORY = "category";  // Added category column
+    public static final String COLUMN_CATEGORY = "category";
 
     private static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE_NAME + " (" +
@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_NAME + " TEXT, " +
                     COLUMN_DATE + " TEXT, " +
                     COLUMN_IMAGE_URI + " TEXT, " +
-                    COLUMN_CATEGORY + " TEXT);";  // Added category column to the table creation query
+                    COLUMN_CATEGORY + " TEXT);";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -49,7 +49,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_NAME, name);
         values.put(COLUMN_DATE, expirationDate);
         values.put(COLUMN_IMAGE_URI, imageUri);
-        values.put(COLUMN_CATEGORY, category);  // Added category value
+        values.put(COLUMN_CATEGORY, category);
 
         long newRowId = db.insert(TABLE_NAME, null, values);
         db.close();

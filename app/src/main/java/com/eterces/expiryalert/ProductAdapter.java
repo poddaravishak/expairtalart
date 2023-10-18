@@ -82,7 +82,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             textViewName = itemView.findViewById(R.id.textViewName);
             textViewDate = itemView.findViewById(R.id.textViewDate);
             textViewDaysRemaining = itemView.findViewById(R.id.textViewDaysRemaining);
-            category = itemView.findViewById(R.id.category);
+            category = itemView.findViewById(R.id.textViewcategory);
         }
     }
 

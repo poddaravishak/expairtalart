@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -25,9 +26,10 @@ import com.eterces.expiryalert.databinding.ActivityMainBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int PICK_IMAGE_REQUEST = 3;
 
-    private ActivityMainBinding binding;
+    private @NonNull
+    ActivityMainBinding binding;
 
     private ImageView imageViewSelectedImage;
     private Button dateButton;
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Get other input values
                 String name = editTextInput.getText().toString().trim();
-                String category = "";  // You can add category input if needed
+                String category = spinnerCategory.getSelectedItem().toString();
 
                 // Check if the required fields are not empty
                 if (!name.isEmpty() && selectedImageUri != null) {
