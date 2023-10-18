@@ -26,6 +26,9 @@ public class fragment_home extends Fragment {
 
     private ProductAdapter productAdapter;
     private ArrayList<Product> productList;
+    private RecyclerView recyclerView;
+    private ImageView noDataImageView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,7 +36,8 @@ public class fragment_home extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Initialize RecyclerView and ProductAdapter
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        noDataImageView = view.findViewById(R.id.noDataImageView);
         productList = new ArrayList<>();
         productAdapter = new ProductAdapter(requireContext(), productList);
 
@@ -54,16 +58,27 @@ public class fragment_home extends Fragment {
         // Perform database query to fetch the list of products
         Cursor cursor = dbHelper.getData();
 
-        // Iterate through the cursor and populate the productList
-        while (cursor.moveToNext()) {
-            String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NAME));
-            String date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DATE));
-            String imageUri = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_IMAGE_URI));
-            String category = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CATEGORY));
+        // Check if there is no data
+        if (cursor.getCount() == 0) {
+            // Show the ImageView and hide the RecyclerView
+            recyclerView.setVisibility(View.GONE);
+            noDataImageView.setVisibility(View.VISIBLE);
+        } else {
+            // Iterate through the cursor and populate the productList
+            while (cursor.moveToNext()) {
+                String name = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_NAME));
+                String date = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_DATE));
+                String imageUri = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_IMAGE_URI));
+                String category = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_CATEGORY));
 
-            // Create a Product object and add it to the productList
-            Product product = new Product(name, date, calculateDaysRemaining(date), category, imageUri);
-            productList.add(product);
+                // Create a Product object and add it to the productList
+                Product product = new Product(name, date, calculateDaysRemaining(date), category, imageUri);
+                productList.add(product);
+            }
+
+            // Hide the ImageView and show the RecyclerView
+            recyclerView.setVisibility(View.VISIBLE);
+            noDataImageView.setVisibility(View.GONE);
         }
 
         // Close the cursor and database
@@ -99,5 +114,4 @@ public class fragment_home extends Fragment {
             return " ";
         }
     }
-
 }

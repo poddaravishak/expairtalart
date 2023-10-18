@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 R.array.categories_array, // Replace with your array resource
                 android.R.layout.simple_spinner_item
         );
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
         spinnerCategory.setSelection(0, false);
