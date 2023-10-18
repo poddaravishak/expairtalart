@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:src="@drawable/filter">
+        android:src="@drawable/category">
 
     </ImageButton>
 
@@ -48,15 +48,24 @@
         android:padding="8dp"
         android:scrollbars="vertical"
         tools:listitem="@layout/item_layout" />
-    <ImageView
-      android:id="@+id/noDataImageView"
+<!--    <ImageView-->
+<!--      android:id="@+id/noDataImageView"-->
+<!--        android:layout_width="match_parent"-->
+<!--     android:layout_height="match_parent"-->
+<!--        android:layout_gravity="center"-->
+<!--    android:src="@drawable/hello"-->
+<!--    android:visibility="gone" />-->
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/noDataImageView"
         android:layout_width="match_parent"
-     android:layout_height="match_parent"
-        android:layout_gravity="center"
-    android:src="@drawable/hello"
-    android:visibility="gone" />
-
-
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/animation_lnw8i62s">
+    </com.airbnb.lottie.LottieAnimationView>
 
 </LinearLayout>
 </RelativeLayout>

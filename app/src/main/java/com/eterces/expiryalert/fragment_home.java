@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ public class fragment_home extends Fragment {
     private ProductAdapter productAdapter;
     private ArrayList<Product> productList;
     private RecyclerView recyclerView;
-    private ImageView noDataImageView;
+    private LottieAnimationView noDataImageView;
 
 
     @Override

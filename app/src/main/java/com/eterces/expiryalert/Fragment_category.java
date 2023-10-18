@@ -11,106 +11,99 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Fragment_category extends Fragment {
-    private AlertDialog alertDialog; // Declare alertDialog at a higher scope
-    private ImageView iconView;
+    private AlertDialog alertDialog;
+    private CategoryDatabaseHelper categoryDbHelper;
+    private RecyclerView recyclerView;
+    private CategoryAdapter categoryAdapter;
+    private List<String> categoryList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_category, container, false);
 
-        // Find the CardView in the layout
+        categoryDbHelper = new CategoryDatabaseHelper(getActivity());
+
         CardView categoryCardView = view.findViewById(R.id.categoryinput);
 
-        // Set OnClickListener for the CardView
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        categoryList = new ArrayList<>();
+        categoryAdapter = new CategoryAdapter(categoryList);
+        recyclerView.setAdapter(categoryAdapter);
+
         categoryCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Inflate the dialog layout
                 View dialogView = getLayoutInflater().inflate(R.layout.popup_layout, null);
 
-                // Create an AlertDialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setView(dialogView);
 
-                // Find views inside the dialog layout
                 EditText editText = dialogView.findViewById(R.id.editText);
-                ImageButton closeButton = dialogView.findViewById(R.id.closeButton);
-                TextView selectIconTextView = dialogView.findViewById(R.id.selecticon);
 
-                // Set click listener for the select icon TextView
-                selectIconTextView.setOnClickListener(new View.OnClickListener() {
+                builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        // Show a list of icons when the TextView is clicked
-                        showIconListDialog();
+                    public void onClick(DialogInterface dialog, int which) {
+                        String categoryName = editText.getText().toString().trim();
+                        if (!categoryName.isEmpty()) {
+                            // Save the category to the database
+                            saveCategoryToDatabase(categoryName);
+                            // Refresh the RecyclerView with the updated data
+                            refreshRecyclerView();
+                        }
                     }
                 });
 
-                // Set click listeners for other views inside the dialog
-                closeButton.setOnClickListener(new View.OnClickListener() {
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        // Close the dialog when the close button is clicked
-                        alertDialog.dismiss();
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
                     }
                 });
 
-                // Create and show the AlertDialog
                 alertDialog = builder.create();
                 alertDialog.show();
             }
         });
 
+        // Initialize the RecyclerView with existing categories
+        refreshRecyclerView();
+
         return view;
     }
 
+    private void saveCategoryToDatabase(String categoryName) {
+        // You can use the CategoryDatabaseHelper to save the category
+        long result = categoryDbHelper.insertCategory(categoryName);
+        if (result != -1) {
+            showToast("Category added successfully");
+        } else {
+            showToast("Failed to add category");
+        }
+    }
 
-    private void showIconListDialog() {
+    private void refreshRecyclerView() {
+        // Load categories from the database and update the RecyclerView
+        categoryList.clear();
+        categoryList.addAll(categoryDbHelper.getAllCategories());
+        categoryAdapter.notifyDataSetChanged();
+    }
 
-        Integer[] iconIds = {R.drawable.ic1, R.drawable.ic1, R.drawable.ic1};
-
-        List<Integer> iconList = Arrays.asList(iconIds);
-
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(
-                getActivity(),
-                R.layout.custom_icon_list_item,
-                R.id.text_view,
-                iconList) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView textView = view.findViewById(R.id.text_view);
-                ImageView imageView = view.findViewById(R.id.icon);
-                textView.setText("Icon " + (position + 1));
-                // Set the icon
-                imageView.setImageResource(iconList.get(position));
-                return view;
-            }
-        };
-
-        // Create a dialog with the list of icons
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Select an Icon")
-                .setAdapter(adapter, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        int selectedIconId = iconList.get(which);
-
-                    }
-                });
-
-        // Show the dialog
-        builder.create().show();
+    private void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }

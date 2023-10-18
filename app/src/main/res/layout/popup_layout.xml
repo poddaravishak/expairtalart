@@ -4,45 +4,53 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <ImageButton
-        android:id="@+id/closeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/close"
-        android:layout_gravity="right"
-        android:contentDescription="Close"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/lavender"
+            android:text="Create a New Category">
+        </TextView>
 
-  <TextView
-      android:id="@+id/selecticon"
-      android:layout_width="wrap_content"
-      android:text="hello"
-      android:layout_height="wrap_content">
-
-  </TextView>
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-
-
-    <ImageView
-        android:id="@+id/iconview23"
-        android:layout_width="50dp"
-        android:layout_height="50dp"/>
     <EditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter text"/>
-</LinearLayout>
+        android:layout_height="40sp"
+        android:background="@drawable/edit_text"
+        android:paddingLeft="10sp"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/checklist"
+        android:textColorHint="#C6C6C6"
+        android:hint="Enter your Category Name"/>
 
 
-    <Button
-        android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"/>
+
+<!--    <Button-->
+<!--        android:id="@+id/submitButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:text="Submit"-->
+<!--        android:textColor="#ffffff"-->
+<!--        android:background="#3498db"-->
+<!--      android:paddingStart="16dp"-->
+<!--        android:paddingEnd="16dp"-->
+<!--    android:paddingTop="8dp"-->
+<!--    android:paddingBottom="8dp"-->
+<!--    android:gravity="center"-->
+<!--    android:textSize="16sp"-->
+<!--    android:fontFamily="sans-serif-medium"-->
+<!--        android:drawableRight="@drawable/arrow"-->
+<!--    android:shadowColor="#000000"-->
+<!--    android:shadowDx="3"-->
+<!--    android:shadowDy="2"-->
+<!--    android:shadowRadius="10"-->
+<!--    android:radius="20dp"-->
+<!--    android:elevation="4dp"/>-->
+
 </LinearLayout>
