@@ -34,26 +34,23 @@
             android:layout_width="320dp"
             android:layout_height="60dp"
             android:layout_marginTop="30dp"
-            app:cardBackgroundColor="@color/lavender"
+            app:cardBackgroundColor="#009688"
             app:cardCornerRadius="20dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/add"/>
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Add Category  "
+    android:textColor="#FFC107"
+    android:textStyle="bold"
+    android:textSize="20dp"
+    android:layout_gravity="center"
+    android:drawableRight="@drawable/add"/>
 
         </androidx.cardview.widget.CardView>
 
-         <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="100dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal"
-             app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/smile">
-    </com.airbnb.lottie.LottieAnimationView>
+
     </LinearLayout>
 
 
