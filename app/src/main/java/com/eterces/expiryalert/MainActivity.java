@@ -25,6 +25,10 @@ import com.bumptech.glide.Glide;
 import com.eterces.expiryalert.databinding.ActivityMainBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 3;
 
@@ -86,14 +90,26 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize the Spinner
         Spinner spinnerCategory = dialogView.findViewById(R.id.spinnerCategory);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.categories_array, // Replace with your array resource
-                android.R.layout.simple_spinner_item
-        );
 
+        // Get the category names from the database
+        CategoryDatabaseHelper dbHelper = new CategoryDatabaseHelper(this);
+        List<String> categoryNamesFromDatabase = dbHelper.getAllCategories();
+
+        // Get the default category names from the resource XML
+        String[] defaultCategoriesArray = getResources().getStringArray(R.array.categories_array);
+        List<String> defaultCategories = Arrays.asList(defaultCategoriesArray);
+
+        // Create a list that combines the default categories and the categories from the database
+        List<String> combinedCategories = new ArrayList<>(defaultCategories);
+        combinedCategories.addAll(categoryNamesFromDatabase);
+
+        // Add a hint as the first item
+        combinedCategories.add(0, "Select Category");
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, combinedCategories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
+
+        // Set the hint as unselectable
         spinnerCategory.setSelection(0, false);
 
         DateSelector.setupDateSelector(this, dateButton);
@@ -116,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
                 if (!name.isEmpty() && selectedImageUri != null) {
                     // Save the data to the database or perform other actions
                     saveDataToDatabase(name, dateButton.getText().toString(), selectedImageUri.toString(), category);
+
+                    // Refresh the fragment
+                    refreshFragment();
 
                     // Dismiss the dialog
                     dialog.dismiss();
@@ -167,6 +186,17 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void refreshFragment() {
+        // Replace the current fragment with the same fragment to refresh it
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+        if (currentFragment != null) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.detach(currentFragment);
+            fragmentTransaction.attach(currentFragment);
+            fragmentTransaction.commit();
         }
     }
 }
