@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -25,15 +27,18 @@ import com.bumptech.glide.Glide;
 import com.eterces.expiryalert.databinding.ActivityMainBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 3;
 
-    private @NonNull
-    ActivityMainBinding binding;
+    private @NonNull ActivityMainBinding binding;
 
     private ImageView imageViewSelectedImage;
     private Button dateButton;
@@ -67,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
                 showInputDialog();
             }
         });
+
+        // Your existing code...
+
+        Intent serviceIntent = new Intent(this, NotificationService.class);
+        startService(serviceIntent);
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -127,11 +137,15 @@ public class MainActivity extends AppCompatActivity {
                 // Get other input values
                 String name = editTextInput.getText().toString().trim();
                 String category = spinnerCategory.getSelectedItem().toString();
+                String expirationDate = dateButton.getText().toString();
 
                 // Check if the required fields are not empty
-                if (!name.isEmpty() && selectedImageUri != null) {
-                    // Save the data to the database or perform other actions
-                    saveDataToDatabase(name, dateButton.getText().toString(), selectedImageUri.toString(), category);
+                if (!name.isEmpty() && selectedImageUri != null && !expirationDate.isEmpty()) {
+                    // Save the data to the database
+                    saveDataToDatabase(name, expirationDate, selectedImageUri.toString(), category);
+
+                    // Add the event to the Google Calendar
+                    addToGoogleCalendar(name, expirationDate);
 
                     // Refresh the fragment
                     refreshFragment();
@@ -187,6 +201,37 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
             Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void addToGoogleCalendar(String eventName, String eventDate) {
+        try {
+            // Create an Intent to open the calendar app
+            Intent intent = new Intent(Intent.ACTION_INSERT);
+            intent.setData(CalendarContract.Events.CONTENT_URI);
+            intent.putExtra(CalendarContract.Events.TITLE, eventName);
+            intent.putExtra(CalendarContract.Events.EVENT_LOCATION, "Location (if needed)");
+            intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, getMillisecondsFromDateString(eventDate));
+            intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, getMillisecondsFromDateString(eventDate));
+
+            // Start the calendar app
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to add event to Google Calendar", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private long getMillisecondsFromDateString(String dateStr) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        try {
+            Date date = dateFormat.parse(dateStr);
+            if (date != null) {
+                return date.getTime();
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     private void refreshFragment() {
